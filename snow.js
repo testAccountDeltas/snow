@@ -1,7 +1,10 @@
 // Новогодний падающий снег — мобильная оптимизация + плавный спавн
 // Подключение: <script src="https://your-cdn.com/snow.js" data-count="120" data-wind="40" data-speed="0.7"></script>
 
-(function () {
+(function (Start) {
+    if(!Start) {
+        return;
+    }
     console.log('Запуск мобильно-оптимизированного снега...');
 
     if (localStorage.getItem('snowDisabled') === 'true') return;
@@ -163,4 +166,15 @@
         localStorage.removeItem('snowDisabled');
         location.reload();
     };
-})();
+})((function(date = new Date()) {
+    const year = date.getFullYear();
+    
+    // Создаем даты для диапазона
+    const startThisYear = new Date(year, 11, 20); // 20 декабря текущего года
+    const endNextYear = new Date(year + 1, 0, 25); // 25 января следующего года
+    const startLastYear = new Date(year - 1, 11, 20); // 20 декабря прошлого года
+    
+    // Проверяем два возможных диапазона
+    return (date >= startLastYear && date <= new Date(year, 0, 25)) ||
+           (date >= startThisYear && date <= endNextYear);
+})());
